@@ -24,7 +24,7 @@ var net = require("net")
 
 var log = function(s) { console.log(s) }
 
-global.Slicer = function(mark) {
+global.Chopper = function(mark) {
 
 	var self = this
 	self.mark = mark ? mark : "\0"
@@ -48,35 +48,34 @@ global.Slicer = function(mark) {
 
 if(false) {
 
-
-	exports.Slicer = Slicer
+	exports.Chopper = Chopper
 
 	log("returned array ...")
-	var slicer = new Slicer("\0");
-	log(slicer.next('{"seq":0}\0'));
-	log(slicer.next('{"seq":1}\0'));
-	log(slicer.next('{"seq":'));
-	log(slicer.next('2}\0'));
-	log(slicer.next('{"seq":3}\0{"seq":4}\0'));
-	log(slicer.next('{"seq":5}\0{'));
-	log(slicer.next('"seq":6}\0'));
-	log(slicer.next('\0'));
-	log(slicer.next('{"seq":7}\0{"seq":8}\0{"seq":9}'));
-	log(slicer.next('\0{"seq":10}'));
+	var chopper = new Chopper("\0");
+	log(chopper.next('{"seq":0}\0'));
+	log(chopper.next('{"seq":1}\0'));
+	log(chopper.next('{"seq":'));
+	log(chopper.next('2}\0'));
+	log(chopper.next('{"seq":3}\0{"seq":4}\0'));
+	log(chopper.next('{"seq":5}\0{'));
+	log(chopper.next('"seq":6}\0'));
+	log(chopper.next('\0'));
+	log(chopper.next('{"seq":7}\0{"seq":8}\0{"seq":9}'));
+	log(chopper.next('\0{"seq":10}'));
 
 	log("with callback ...")
-	var slicer = new Slicer("\n");
+	var chopper = new Chopper("\n");
 	var f = function(m) { log(m) }
-	slicer.next('{"seq":0}\n', f)
-	slicer.next('{"seq":1}\n', f)
-	slicer.next('{"seq":', f)
-	slicer.next('2}\n', f)
-	slicer.next('{"seq":3}\n{"seq":4}\n', f)
-	slicer.next('{"seq":5}\n{', f)
-	slicer.next('"seq":6}\n', f)
-	slicer.next('\n', f)
-	slicer.next('{"seq":7}\n{"seq":8}\n{"seq":9}', f)
-	slicer.next('\n{"seq":10}', f)
+	chopper.next('{"seq":0}\n', f)
+	chopper.next('{"seq":1}\n', f)
+	chopper.next('{"seq":', f)
+	chopper.next('2}\n', f)
+	chopper.next('{"seq":3}\n{"seq":4}\n', f)
+	chopper.next('{"seq":5}\n{', f)
+	chopper.next('"seq":6}\n', f)
+	chopper.next('\n', f)
+	chopper.next('{"seq":7}\n{"seq":8}\n{"seq":9}', f)
+	chopper.next('\n{"seq":10}', f)
 }
 
 
