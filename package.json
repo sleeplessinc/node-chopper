@@ -1,7 +1,7 @@
-{ "name" : "node-chopper"
+{ "name" : "chopper"
+, "description" : "Cuts a stream into discrete pieces using a delimiter"
 , "version" : "0.0.1"
 , "author" : "Joe Hitchens <joe@sleepless.com>"
-, "description" : "Cuts a stream into discrete pieces using a delimiter"
-, "main" : "./chopper.js"
+, "main" : "./index.js"
 }
 
