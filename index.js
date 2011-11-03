@@ -20,8 +20,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE. 
 */
 
-var net = require("net")
-
 var log = function(s) { console.log(s) }
 
 global.Chopper = function(mark) {
