@@ -22,19 +22,21 @@ IN THE SOFTWARE.
 
 var log = function(s) { console.log(s) }
 
-global.Chopper = function(mark) {
+global.Chopper = function( mark, cb ) {
 
 	var self = this
 	self.mark = mark ? mark : "\0"
 	self.partial = []
+	self.cb = cb
 
-	self.next = function(data, cb) {
+	self.next = function(data, cb ) {
 		var slices = data.split(self.mark, -1)
 		self.partial.push(slices.shift())
 		if(slices.length > 0) {
 			slices.unshift(self.partial.join(''))
 			self.partial = [slices.pop()]
 		}
+		cb = cb || self.cb
 		if(cb === undefined)
 			return slices;
 		while(slices.length > 0)
@@ -42,9 +44,15 @@ global.Chopper = function(mark) {
 		return [];
 	}
 
+	self.feed = self.next
+
+
 }
 
-if(false) {
+
+if(require.main === module) {
+	
+	// test mode
 
 	exports.Chopper = Chopper
 
@@ -74,6 +82,15 @@ if(false) {
 	chopper.next('\n', f)
 	chopper.next('{"seq":7}\n{"seq":8}\n{"seq":9}', f)
 	chopper.next('\n{"seq":10}', f)
+
+	log("with persistent callback ...")
+	var f = function(m) { log(m) }
+	var chopper = new Chopper("\n", f);
+	chopper.next('Hello.\nGoodbye.\n')
+	chopper.next('Why')
+	chopper.next(' are you')
+	chopper.next(' here?\nI do not know.')
+	chopper.next('\nok')
 }
 
 
