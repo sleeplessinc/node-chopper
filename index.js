@@ -20,9 +20,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE. 
 */
 
-var log = function(s) { console.log(s) }
-
-global.Chopper = function( mark, cb ) {
+Chopper = function( mark, cb ) {
 
 	var self = this
 	self.mark = mark ? mark : "\0"
@@ -49,48 +47,10 @@ global.Chopper = function( mark, cb ) {
 
 }
 
+module.exports = Chopper;
 
 if(require.main === module) {
-	
-	// test mode
-
-	exports.Chopper = Chopper
-
-	log("returned array ...")
-	var chopper = new Chopper("\0");
-	log(chopper.next('{"seq":0}\0'));
-	log(chopper.next('{"seq":1}\0'));
-	log(chopper.next('{"seq":'));
-	log(chopper.next('2}\0'));
-	log(chopper.next('{"seq":3}\0{"seq":4}\0'));
-	log(chopper.next('{"seq":5}\0{'));
-	log(chopper.next('"seq":6}\0'));
-	log(chopper.next('\0'));
-	log(chopper.next('{"seq":7}\0{"seq":8}\0{"seq":9}'));
-	log(chopper.next('\0{"seq":10}'));
-
-	log("with callback ...")
-	var chopper = new Chopper("\n");
-	var f = function(m) { log(m) }
-	chopper.next('{"seq":0}\n', f)
-	chopper.next('{"seq":1}\n', f)
-	chopper.next('{"seq":', f)
-	chopper.next('2}\n', f)
-	chopper.next('{"seq":3}\n{"seq":4}\n', f)
-	chopper.next('{"seq":5}\n{', f)
-	chopper.next('"seq":6}\n', f)
-	chopper.next('\n', f)
-	chopper.next('{"seq":7}\n{"seq":8}\n{"seq":9}', f)
-	chopper.next('\n{"seq":10}', f)
-
-	log("with persistent callback ...")
-	var f = function(m) { log(m) }
-	var chopper = new Chopper("\n", f);
-	chopper.next('Hello.\nGoodbye.\n')
-	chopper.next('Why')
-	chopper.next(' are you')
-	chopper.next(' here?\nI do not know.')
-	chopper.next('\nok')
+	require("./test.js");
 }
 
 
