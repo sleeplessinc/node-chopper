@@ -120,3 +120,8 @@ Outputs this:
 The "ok" string at the end isn't recognized as it isn't terminated with \n.
 
 
+## Thanks 
+
+If you find errors please send me pull requests with repairs.
+
+
