@@ -12,7 +12,8 @@ Chops a stream into pieces using a delimiter.
 
 ## StreamChopper
 
-This will let you read a line at a time from text stream in a throttled manner
+The object created from StreamChopper() lets you read a line at a time from a
+stream in a throttled manner:
 
 	require("chopper");
 
@@ -25,11 +26,15 @@ This will let you read a line at a time from text stream in a throttled manner
 		}, 500);
 	});
 
+This outputs a line at a time with a 1/2 second delay between each.
+
+All three arguments to the constructor are required.
+
 
 ## Chopper
 
 The object created from Chopper() cuts the stream into delimited pieces, but does not
-throttle itself at all.
+throttle itself at all.  It can be used 3 different ways.
 
 ### Returning an Array
 
