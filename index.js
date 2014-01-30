@@ -22,16 +22,17 @@ IN THE SOFTWARE.
 
 Chopper = function( mark, cb ) {
 	var self = this
-	self.mark = mark ? mark : "\0"
-	self.partial = []
+
 	self.cb = cb
+	mark = mark ? mark : "\0"
+	partial = []
 
 	self.next = function(data, cb ) {
-		var slices = data.split(self.mark, -1)
-		self.partial.push(slices.shift())
+		var slices = data.split(mark, -1)
+		partial.push(slices.shift())
 		if(slices.length > 0) {
-			slices.unshift(self.partial.join(''))
-			self.partial = [slices.pop()]
+			slices.unshift(partial.join(''))
+			partial = [slices.pop()]
 		}
 		cb = cb || self.cb
 		if(cb === undefined)
@@ -41,8 +42,6 @@ Chopper = function( mark, cb ) {
 		}
 		return [];
 	}
-
-	self.feed = self.next
 }
 
 
@@ -77,7 +76,6 @@ StreamChopper = function(stream, delim, cb_each) {
 	}
 
 	stream.on('data', function(block) {
-		log("block");
 		queue = chopper.next(block)
 		if(queue.length > 0) {
 			stream.pause();
