@@ -1,5 +1,5 @@
 
-/*Copyright 2011 Sleepless Software Inc. All rights reserved.
+/* Copyright 2014 Sleepless Software Inc. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
@@ -21,7 +21,6 @@ IN THE SOFTWARE.
 */
 
 Chopper = function( mark, cb ) {
-
 	var self = this
 	self.mark = mark ? mark : "\0"
 	self.partial = []
@@ -37,17 +36,60 @@ Chopper = function( mark, cb ) {
 		cb = cb || self.cb
 		if(cb === undefined)
 			return slices;
-		while(slices.length > 0)
+		while(slices.length > 0) {
 			cb(slices.shift())
+		}
 		return [];
 	}
 
 	self.feed = self.next
+}
 
+
+StreamChopper = function(stream, delim, cb_each) {
+
+	var nop = function(){};
+	cb_each = cb_each || nop;
+
+	var chopper = new Chopper(delim);
+	var queue = [];
+
+	var pause = this.pause = function() {
+		paused = true;
+	}
+
+	var resume = this.resume = function() {
+		paused = false;
+		process.nextTick(out);
+	}
+
+	var out = function() {
+		if(queue.length > 0) {
+			if(!paused) {
+				var item = queue.shift();
+				cb_each(item);
+				process.nextTick(out);
+			}
+		}
+		if(queue.length == 0) {
+			stream.resume();
+		}
+	}
+
+	stream.on('data', function(block) {
+		log("block");
+		queue = chopper.next(block)
+		if(queue.length > 0) {
+			stream.pause();
+		}
+		process.nextTick(out);
+	});
 
 }
 
-module.exports = Chopper;
+global.Chopper = Chopper;
+global.StreamChopper = StreamChopper;
+
 
 if(require.main === module) {
 	require("./test.js");
