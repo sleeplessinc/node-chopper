@@ -34,7 +34,10 @@ All three arguments to the constructor are required.
 ## Chopper
 
 The object created from Chopper() cuts the stream into delimited pieces, but does not
-throttle itself at all.  It can be used 3 different ways.
+throttle itself at all.  The stream for Chopper() is just sequentials calls to feed it
+more data via next(). 
+
+Chopper() can be used 3 different ways.
 
 ### Returning an Array
 
