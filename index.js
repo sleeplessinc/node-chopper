@@ -52,6 +52,7 @@ StreamChopper = function(stream, delim, cb_each) {
 
 	var chopper = new Chopper(delim);
 	var queue = [];
+	var paused = false;
 
 	var pause = this.pause = function() {
 		paused = true;
