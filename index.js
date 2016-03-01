@@ -1,5 +1,5 @@
 
-/* Copyright 2014 Sleepless Software Inc. All rights reserved.
+/* Copyright 2016 Sleepless Software Inc. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
@@ -76,6 +76,7 @@ StreamChopper = function(stream, delim, cb_each) {
 		}
 	}
 
+	stream.setEncoding('utf8');
 	stream.on('data', function(block) {
 		queue = chopper.next(block)
 		if(queue.length > 0) {
